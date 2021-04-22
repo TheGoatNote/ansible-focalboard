@@ -1,0 +1,6 @@
+---
+- hosts: focalboard
+  roles:
+    - postgresql
+    - focalboard
+    - nginx

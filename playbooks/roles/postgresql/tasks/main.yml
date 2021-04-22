@@ -1,0 +1,22 @@
+---
+- name: Install Packages needed for postgresql
+  apt:
+    name: "{{ postgresql_packages }}"
+    state: latest
+    update_cache: yes
+
+- name: Create a new database
+  become: yes
+  become_user: postgres
+  become_method: su
+  postgresql_db:
+    name: "{{ postgresql_app_database }}"
+    state: present
+
+- name: Create app user with privileges
+  become: yes
+  become_user: postgres
+  become_method: su
+  postgresql_user:
+    name: "{{ postgresql_app_user }}"
+    password: "{{ postgresql_app_pass }}"

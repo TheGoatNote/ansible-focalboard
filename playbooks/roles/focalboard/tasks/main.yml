@@ -1,0 +1,34 @@
+---
+- name: Clone focalboard repository
+  get_url:
+    url: https://github.com/mattermost/focalboard/releases/download/{{ focalboard_version }}/focalboard-server-linux-amd64.tar.gz
+    dest: /tmp/focal.tar.gz
+
+- name: Extract to opt
+  unarchive:
+    src: /tmp/focal.tar.gz
+    dest: /opt/
+    remote_src: yes
+
+- name: Generate focalboard config file
+  template:
+    src: conf.j2
+    dest: /opt/focalboard/config.json
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy systemd file to server
+  copy:
+    src: focalboard.service
+    dest: /lib/systemd/system
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Start focalboard.service and enabled it
+  systemd:
+    name: focalboard
+    state: started
+    daemon_reload: yes
+    enabled: yes

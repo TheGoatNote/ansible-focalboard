@@ -1,0 +1,4 @@
+---
+postgresql_app_user: boardsuser
+postgresql_app_database: boards
+focalboard_version: v0.6.5
